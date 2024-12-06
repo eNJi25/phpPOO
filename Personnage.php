@@ -2,26 +2,42 @@
 class Personnage {
 
     private int $winCombat = 0;
+    private int $loseCombat = 0;
+    private const int MAX_LEVEL = 100;
+    private const int MIN_LEVEL = 1;
+
+    public function getLoseCombat(): int
+    {
+        return $this->loseCombat;
+    }
 
     public function __construct(
         private string $name,
         private int $health,
         private int $attack,
         private int $defense,
-        private int $level = 1){}
+        private int $level = self::MIN_LEVEL){}
 
-    public function reduceHealth(int $health){
-        $this->health -= $health;
+
+    public function attack(Personnage $enemy): void {
+        if ($this->attack > $enemy->getDefense()) {
+            $enemy->setHealth($enemy->getHealth() - ($this->attack - $enemy->getDefense()) );
+            $this->increaseLevel();
+            $enemy->decreaseLevel();
+            $this->winCombat++;
+            $enemy->loseCombat++;
+        } else {
+            $this->setHealth($this->getHealth() - ($enemy->getDefense() - $this->getAttack()));
+            $this->decreaseLevel();
+            $enemy->increaseLevel();
+            $enemy->winCombat++;
+            $this->loseCombat++;
+        }
     }
 
-    public function attack(string $name){
-        $enemyDefense = rand(0, 100);
-        if ($this->attack > $enemyDefense) {
-            $this->level++;
-            $this->winCombat++;
-        } else {
-            $this->level--;
-        }
+    public function getWinCombat(): int
+    {
+        return $this->winCombat;
     }
 
     public function getName(): string
@@ -47,7 +63,7 @@ class Personnage {
 
     public function setHealth(int $health): void
     {
-        $this->health = $health;
+        $this->health = $health < 0 ? 0 : $health;
     }
 
     public function getAttack(): int
@@ -60,7 +76,7 @@ class Personnage {
         $this->attack = $attack;
     }
 
-    public function getDefense(int $defense): int
+    public function getDefense(): int
     {
         return $this->defense;
     }
@@ -70,4 +86,17 @@ class Personnage {
         $this->defense = $defense;
     }
 
+    private function increaseLevel(): void {
+        $this->level++;
+        if ($this->level > self::MAX_LEVEL) {
+            $this->level = self::MAX_LEVEL;
+        }
+    }
+
+    private function decreaseLevel(): void {
+        $this->level--;
+        if ($this->level < self::MIN_LEVEL) {
+            $this->level = self::MIN_LEVEL;
+        }
+    }
 }
