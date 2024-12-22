@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-class Homepage
+class HomepageController
 {
-    public function index()
+    public function index(): array
     {
         return [
             'page' => 'index',

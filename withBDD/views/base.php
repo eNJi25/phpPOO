@@ -12,14 +12,18 @@
         <nav>
             <ul>
                 <li><a href="/">Accueil</a></li>
-                <li><a href="/ma-page">Ma page</a></li>
+                <li><a href="/article/list">Mes articles</a></li>
             </ul>
         </nav>
     </header>
+
     <main>
-        <?php require_once 'views/' . $page . '.php' ?>
+        <?php require_once 'pages/'.$page.'.php'; ?>
     </main>
-    <footer></footer>
+
+    <footer>
+
+    </footer>
 </body>
 </html>
 

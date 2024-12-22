@@ -2,5 +2,10 @@
     "name": "nicolasf/with-bdd",
     "description": "Php POO course",
     "type": "project",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
     "require": {}
 }

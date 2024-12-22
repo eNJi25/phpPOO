@@ -1,5 +1,9 @@
 <?php
 
+namespace App\Database;
+
+use PDO;
+
 class DbConnection
 {
     private static $instance = null;
@@ -8,23 +12,25 @@ class DbConnection
 
     public function __construct()
     {
-        try {
-            $this->pdo = new PDO("mysql:host=localhost;dbname=phpPOO", "test", "test");
-        } catch (Exception $e) {
-            throw new PDOException($e->getMessage());
-        }
+        $this->pdo = new PDO('mysql:host=localhost;dbname=phpPOO', 'test', 'test');
     }
 
-    public static function getInstance()
+    public static function getInstance(): DbConnection
+    {
+        return self::createInstance();
+    }
+
+    public static function getPDO(): PDO
+    {
+        return self::createInstance()->pdo;
+    }
+
+    private static function createInstance(): DbConnection
     {
         if (self::$instance === null) {
-            self::$instance = new DbConnection();
+            static::$instance = new DbConnection();
         }
-        return self::$instance;
-    }
 
-    public function getPDO()
-    {
-        return $this->pdo;
+        return self::$instance;
     }
 }
